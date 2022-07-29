@@ -17,7 +17,13 @@ class MainActivity : AppCompatActivity() {
         //Thread.sleep(3000) : 메인스레드에서 동작을 멈추는 Thread.sleep() 메서드를 호출하므로 에뮬레이터 화면에 아무것도 보이지 않음
         //1차 수정본 : 3초간 프로그래스바가 동작하다가 앱이 다운됨(UI와 관련된 모든 코드는 메인 스레드에서 실행해야만 함 - showProgress 메서드를 백그라운드에서 호출하기 때문에 생기는 오류)
         thread(start=true) { //함수 블록 안의 코드가 모두 백그라운드(서브 스레드)에서 동작
-            Thread.sleep(3000)
+            //3차 수정본 : 1초에 1씩 증가하는 숫자를 출력하고 6초가 되면 사라짐
+            for(x in 0..5) {
+                runOnUiThread {
+                    binding.textView.text = x.toString()
+                }
+                Thread.sleep(1000)
+            }
             //showProgress(false)
             //2차 수정본
             runOnUiThread { //메인 스레드
